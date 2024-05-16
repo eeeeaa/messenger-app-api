@@ -7,6 +7,8 @@ const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
+const messageRouter = require("./routes/messages");
+const roomsRouter = require("./routes/rooms");
 const usersRouter = require("./routes/users");
 
 const compression = require("compression");
@@ -62,6 +64,8 @@ require("./utils/passport");
 
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
+app.use("/rooms", roomsRouter);
+app.use("/messages", messageRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
