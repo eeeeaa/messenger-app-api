@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-const auth_controller = require("../controllers/authController");
+const auth_controller = require("../../controllers/authController");
 
 router.post("/login", auth_controller.login_post);
 

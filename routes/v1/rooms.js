@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-const room_controller = require("../controllers/roomController");
+const room_controller = require("../../controllers/roomController");
 
 router.get("/", room_controller.rooms_get);
 router.post("/", room_controller.rooms_post);

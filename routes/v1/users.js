@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-const user_controller = require("../controllers/userController");
+const user_controller = require("../../controllers/userController");
 
 router.get("/", user_controller.users_get);
 router.post("/", user_controller.users_post);

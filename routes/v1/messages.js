@@ -1,7 +1,7 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-const message_controller = require("../controllers/messageController");
+const message_controller = require("../../controllers/messageController");
 
 router.get("/", message_controller.messages_get);
 router.post("/", message_controller.messages_post);
