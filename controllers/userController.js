@@ -8,6 +8,8 @@ const {
 const { getHash } = require("../utils/passwordUtils");
 
 const User = require("../models/user");
+const Room = require("../models/room");
+const Message = require("../models/message");
 
 exports.users_get = [
   passport.authenticate("jwt", { session: false }),
@@ -151,7 +153,16 @@ exports.users_delete = [
       err.status = 404;
       return next(err);
     }
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+    const [deletedUser, rooms, messages] = await Promise.all([
+      User.findByIdAndDelete(req.params.id),
+      Room.updateMany(
+        { users: req.params.id },
+        { $pull: { users: req.params.id } }
+      ).exec(),
+      Message.deleteMany({ user: req.params.id }).exec(),
+    ]);
+
     res.json({
       deletedUser,
     });
