@@ -26,7 +26,7 @@ const server = http.createServer(app);
 /**
  * Setup socket
  */
-//initSocket(server);
+initSocket(server);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -154,12 +154,8 @@ exports.users_delete = [
       return next(err);
     }
 
-    const [deletedUser, rooms, messages] = await Promise.all([
+    const [deletedUser, messages] = await Promise.all([
       User.findByIdAndDelete(req.params.id),
-      Room.updateMany(
-        { users: req.params.id },
-        { $pull: { users: req.params.id } }
-      ).exec(),
       Message.deleteMany({ user: req.params.id }).exec(),
     ]);
 

@@ -45,12 +45,10 @@ exports.rooms_post = [
     .isLength({ min: 1 })
     .withMessage("room name must not be empty")
     .escape(),
-  body("users").optional({ values: "falsy" }).isArray(),
   validationErrorHandler,
   asyncHandler(async (req, res, next) => {
     const room = new Room({
       room_name: req.body.room_name,
-      users: req.body.users,
     });
 
     await room.save();
@@ -65,7 +63,6 @@ exports.rooms_put = [
   passport.authenticate("jwt", { session: false }),
   validIdErrorHandler,
   body("room_name").optional({ values: "falsy" }).trim().escape(),
-  body("users").optional({ values: "falsy" }).isArray(),
   validationErrorHandler,
   asyncHandler(async (req, res, next) => {
     const existRoom = await Room.findById(req.params.id).exec();
@@ -78,7 +75,6 @@ exports.rooms_put = [
 
     const room = new Room({
       room_name: req.body.room_name,
-      users: req.body.users,
       _id: req.params.id,
     });
 
