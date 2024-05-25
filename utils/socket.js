@@ -3,7 +3,8 @@ const { Server } = require("socket.io");
 const passport = require("passport");
 require("dotenv").config();
 
-const { userSocketHandler } = require("./sockets/userSocket");
+const { userSocketHandler, userLeaves } = require("./sockets/userSocket");
+const { roomSocketHandler } = require("./sockets/roomSocket");
 
 function initSocket(http) {
   const io = new Server(http, {
@@ -23,14 +24,12 @@ function initSocket(http) {
     console.log(`⚡: ${socket.id} user just connected!`);
 
     userSocketHandler(io, socket);
+    roomSocketHandler(io, socket);
 
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
-
-      //TODO remove user from active user list
-
-      //Sends the list of users to the client
-      //io.emit("newUserResponse", users);
+      const user = socket.request.user;
+      userLeaves(io, user);
       socket.disconnect();
     });
   });

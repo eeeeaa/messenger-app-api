@@ -29,6 +29,11 @@ exports.login_post = [
         error.status = 404;
         return next(error);
       }
+      if (user.status === "Online") {
+        const error = new Error("user already logged in");
+        error.status = 409;
+        return next(error);
+      }
       req.login(user, { session: false }, (err) => {
         if (err) {
           next(err);
