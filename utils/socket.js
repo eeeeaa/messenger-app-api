@@ -26,11 +26,24 @@ function initSocket(http) {
     userSocketHandler(io, socket);
     roomSocketHandler(io, socket);
 
+    socket.on("connect_error", (err) => {});
+
+    socket.on("connect_failed", (err) => {});
+
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
       const user = socket.request.user;
       userLeaves(io, user);
       socket.disconnect();
+    });
+
+    socket.on("disconnecting", () => {
+      var rooms = Object.keys(socket.rooms);
+      const user = socket.request.user;
+      for (const room of rooms) {
+        socket.leave(room);
+        io.to(room).emit("onLeaveRoom", user);
+      }
     });
   });
 }
