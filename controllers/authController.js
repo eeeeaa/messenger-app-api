@@ -29,11 +29,6 @@ exports.login_post = [
         error.status = 404;
         return next(error);
       }
-      /*if (user.status === "Online") {
-        const error = new Error("user already logged in");
-        error.status = 409;
-        return next(error);
-      }*/
       req.login(user, { session: false }, (err) => {
         if (err) {
           next(err);
@@ -42,7 +37,9 @@ exports.login_post = [
         const token = jwt.sign({ user }, process.env.SECRET, {
           expiresIn: "3h",
         });
-        return res.json({ username: user.username, token });
+        return res.json({
+          token,
+        });
       });
     })(req, res);
   }),

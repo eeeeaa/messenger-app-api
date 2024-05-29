@@ -40,6 +40,15 @@ exports.users_get_one = [
   }),
 ];
 
+exports.user_get_self = [
+  passport.authenticate("jwt", { session: false }),
+  asyncHandler(async (req, res, next) => {
+    res.json({
+      user: req.user,
+    });
+  }),
+];
+
 //for admin to create user - no password confirm
 exports.users_post = [
   passport.authenticate("jwt", { session: false }),

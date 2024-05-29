@@ -4,6 +4,7 @@ const router = express.Router({ mergeParams: true });
 const user_controller = require("../../controllers/userController");
 
 router.get("/", user_controller.users_get);
+router.get("/my-profile", user_controller.user_get_self);
 router.post("/", user_controller.users_post);
 
 router.get("/:id", user_controller.users_get_one);
