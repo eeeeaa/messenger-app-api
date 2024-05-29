@@ -29,6 +29,10 @@ function roomSocketHandler(io, socket) {
       });
   });
 
+  socket.on("kick all users from room", (roomid) => {
+    io.to(roomid).emit("onKicked");
+  });
+
   socket.on("send message", ({ roomid, message }) => {
     const user = socket.request.user;
     const obj = new Message({
