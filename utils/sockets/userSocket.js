@@ -26,6 +26,14 @@ function userSocketHandler(io, socket) {
       });
   });
 
+  socket.on("user refresh", () => {
+    User.find({})
+      .exec()
+      .then((res) => {
+        io.emit("usersResponse", res);
+      });
+  });
+
   socket.on("user offline", () => {
     const user = socket.request.user;
 
@@ -33,13 +41,21 @@ function userSocketHandler(io, socket) {
 
     socket.disconnect();
   });
+
+  socket.on("update profile", (user) => {
+    io.emit("profileResponse", user);
+  });
 }
 
 function userLeaves(io, user) {
   User.findByIdAndUpdate(user._id, { status: "Offline" }, { new: true })
     .exec()
     .then((res) => {
-      io.emit("onUserLeaves", res);
+      User.find({})
+        .exec()
+        .then((res) => {
+          io.emit("usersResponse", res);
+        });
     });
 }
 

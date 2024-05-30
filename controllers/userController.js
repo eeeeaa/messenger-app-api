@@ -107,7 +107,7 @@ exports.users_put = [
   body("status")
     .optional({ values: "falsy" })
     .custom((input, meta) => {
-      input === "Online" || input === "Offline";
+      return input === "Online" || input === "Offline";
     })
     .withMessage("invalid status type"),
   validationErrorHandler,
