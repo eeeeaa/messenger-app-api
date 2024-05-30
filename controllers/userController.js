@@ -121,6 +121,18 @@ exports.users_put = [
       return next(err);
     }
 
+    if (req.body.username) {
+      const nameExistUser = await User.find({
+        username: req.body.username,
+      }).exec();
+
+      if (nameExistUser) {
+        const err = new Error("Username already used, can't update");
+        err.status = 409;
+        return next(err);
+      }
+    }
+
     let user = null;
 
     if (req.body.password) {
