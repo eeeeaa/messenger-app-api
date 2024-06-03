@@ -37,7 +37,15 @@ function userSocketHandler(io, socket) {
   socket.on("user offline", () => {
     const user = socket.request.user;
 
-    userLeaves(io, user);
+    User.findByIdAndUpdate(user._id, { status: "Offline" }, { new: true })
+      .exec()
+      .then((res) => {
+        User.find({})
+          .exec()
+          .then((res) => {
+            io.emit("usersResponse", res);
+          });
+      });
 
     socket.disconnect();
   });
@@ -47,19 +55,6 @@ function userSocketHandler(io, socket) {
   });
 }
 
-function userLeaves(io, user) {
-  User.findByIdAndUpdate(user._id, { status: "Offline" }, { new: true })
-    .exec()
-    .then((res) => {
-      User.find({})
-        .exec()
-        .then((res) => {
-          io.emit("usersResponse", res);
-        });
-    });
-}
-
 module.exports = {
   userSocketHandler,
-  userLeaves,
 };

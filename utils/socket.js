@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 const passport = require("passport");
 require("dotenv").config();
 
-const { userSocketHandler, userLeaves } = require("./sockets/userSocket");
+const { userSocketHandler } = require("./sockets/userSocket");
 const { roomSocketHandler } = require("./sockets/roomSocket");
 
 function initSocket(http) {
@@ -32,8 +32,6 @@ function initSocket(http) {
 
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
-      const user = socket.request.user;
-      userLeaves(io, user);
       socket.disconnect();
     });
 
