@@ -13,9 +13,13 @@ const helmet = require("helmet");
 require("dotenv").config();
 
 const app = express();
-//const allowOrigins = process.env.ORIGINS.split(",");
+const allowOrigins = process.env.ORIGINS.split(",");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: allowOrigins,
+  })
+);
 
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
